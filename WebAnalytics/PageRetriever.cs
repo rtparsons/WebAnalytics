@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using WebAnalytics.Models;
 
 namespace WebAnalytics
 {
     public class PageRetriever
     {
-        public GetPageResponse GetPage(string url)
+        private readonly HttpClient _client;
+
+        public PageRetriever(HttpClient client)
         {
+            _client = client;
+        }
+
+        public async Task<GetPageResponse> GetPage(string url)
+        {
+            var res = await _client.GetAsync(url);
             return new GetPageResponse
             {
-                Status = 200
+                StatusCode = res.StatusCode
             };
         }
     }
