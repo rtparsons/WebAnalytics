@@ -16,9 +16,11 @@ namespace WebAnalytics
         public async Task<GetPageResponse> GetPage(string url)
         {
             var res = await _client.GetAsync(url);
+            var content = await res.Content.ReadAsStringAsync();
             return new GetPageResponse
             {
-                StatusCode = res.StatusCode
+                StatusCode = res.StatusCode,
+                Content = content
             };
         }
     }

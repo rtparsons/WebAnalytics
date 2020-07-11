@@ -26,12 +26,26 @@ namespace WebAnalytics.Tests
             Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
         }
 
+        [Fact]
+        public async void GetPageReturnsPageContent()
+        {
+            var pr = InitPageRetriever(HttpStatusCode.OK, "testcontent");
+            var res = await pr.GetPage("http://www.testpage.com");
+            Assert.Equal("testcontent", res.Content);
+        }
+
         private PageRetriever InitPageRetriever(HttpStatusCode responseStatus)
+        {
+            return InitPageRetriever(responseStatus, "");
+        }
+
+        private PageRetriever InitPageRetriever(HttpStatusCode responseStatus, string responseContent)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
             var response = new HttpResponseMessage
             {
-                StatusCode = responseStatus
+                StatusCode = responseStatus,
+                Content = new StringContent(responseContent)
             };
 
             handlerMock.Protected()

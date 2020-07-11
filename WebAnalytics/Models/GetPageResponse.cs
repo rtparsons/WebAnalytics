@@ -8,5 +8,6 @@ namespace WebAnalytics.Models
     public class GetPageResponse
     {
         public HttpStatusCode StatusCode { get; set; }
+        public string Content { get; set; }
     }
 }
