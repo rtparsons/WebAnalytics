@@ -1,3 +1,4 @@
+using System.Linq;
 using WebAnalytics.Analysers;
 using WebAnalytics.Models;
 using Xunit;
@@ -52,7 +53,7 @@ namespace WebAnalytics.Tests.Analysers
         }
 
         [Fact]
-        public void GetWordDictRemoveCapitalization()
+        public void GetWordDictRemovesCapitalization()
         {
             var req = new GetPageResponse {
                 Content = "<html><body><p>TEsT</p></body></html>"
@@ -60,6 +61,30 @@ namespace WebAnalytics.Tests.Analysers
             var mfw = new MostFrequentWords();
             var res = mfw.GetWordDict(req);
             Assert.Equal(1, res["test"]);
+        }
+
+        [Fact]
+        public void GetWordDictRemovesSpecialChars()
+        {
+            var req = new GetPageResponse
+            {
+                Content = "<html><body><p>\n | ( ) - +</p></body></html>"
+            };
+            var mfw = new MostFrequentWords();
+            var res = mfw.GetWordDict(req);
+            Assert.Empty(res);
+        }
+
+        [Fact]
+        public void GetWordDictResultIsSorted()
+        {
+            var req = new GetPageResponse
+            {
+                Content = "<html><body><p>1 2 2 3 3 3</p></body></html>"
+            };
+            var mfw = new MostFrequentWords();
+            var res = mfw.GetWordDict(req);
+            Assert.Equal("3", res.First().Key);
         }
     }
 }
