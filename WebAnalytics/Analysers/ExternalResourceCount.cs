@@ -4,7 +4,7 @@ using WebAnalytics.Models;
 
 namespace WebAnalytics.Analysers
 {
-    public class ExternalResourceCount
+    public class ExternalResourceCount : IAnalyser
     {
         public int CountScriptResources(GetPageResponse toParse)
         {
@@ -35,6 +35,14 @@ namespace WebAnalytics.Analysers
             }
 
             return res;
+        }
+
+        public string GetAsPrintableString(GetPageResponse toParse)
+        {
+            var scriptCount = CountScriptResources(toParse);
+            var cssCount = CountCssResources(toParse);
+            return $"Num of scripts: {scriptCount}\n" +
+                $"Num of css files: {cssCount}";
         }
     }
 }

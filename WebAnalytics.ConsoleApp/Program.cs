@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using WebAnalytics.Analysers;
 
 namespace WebAnalytics.ConsoleApp
 {
@@ -16,18 +17,10 @@ namespace WebAnalytics.ConsoleApp
             var pr = serviceProvider.GetService<IPageRetriever>();
             var res = await pr.GetPage(page);
 
-            var titleAnalysis = new Analysers.PageTitle().GetTitle(res);
-            var scriptAnalysis = new Analysers.ExternalResourceCount().CountScriptResources(res);
-            var cssAnalysis = new Analysers.ExternalResourceCount().CountCssResources(res);
-            var wordAnalysis = new Analysers.MostFrequentWords().GetWordDict(res);
-
-            Console.WriteLine($"Page title: {titleAnalysis}");
-            Console.WriteLine($"Num of scripts: {scriptAnalysis}");
-            Console.WriteLine($"Num of css files: {cssAnalysis}");
-            Console.WriteLine($"Most frequent words:\n");
-            foreach(var kv in wordAnalysis)
+            var analysers = serviceProvider.GetServices<IAnalyser>();
+            foreach (var analyser in analysers)
             {
-                Console.WriteLine($"{kv.Key}: {kv.Value}");
+                Console.WriteLine(analyser.GetAsPrintableString(res));
             }
         }
 
@@ -36,6 +29,9 @@ namespace WebAnalytics.ConsoleApp
             var serviceProvider = new ServiceCollection()
                 .AddHttpClient()
                 .AddSingleton<IPageRetriever, PageRetriever>()
+                .AddSingleton<IAnalyser, PageTitle>()
+                .AddSingleton<IAnalyser, ExternalResourceCount>()
+                .AddSingleton<IAnalyser, MostFrequentWords>()
                 .BuildServiceProvider();
 
             return serviceProvider;

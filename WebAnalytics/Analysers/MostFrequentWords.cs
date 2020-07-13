@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using HtmlAgilityPack;
 using WebAnalytics.Models;
 
 namespace WebAnalytics.Analysers
 {
-    public class MostFrequentWords
+    public class MostFrequentWords : IAnalyser
     {
         private readonly char[] _wordSplitChars = new char[] { '.', '?', '!', ' ', ';', ':', ',', '(', ')' };
         private readonly char[] _charsToRemove = new char[] { '\n', '|' };
@@ -66,6 +67,18 @@ namespace WebAnalytics.Analysers
             {
                 wordDict.Add(word, 1);
             }
+        }
+
+        public string GetAsPrintableString(GetPageResponse toParse)
+        {
+            var words = GetWordDict(toParse);
+            var sb = new StringBuilder();
+            sb.AppendLine($"Most frequent words:\n");
+            foreach (var kv in words)
+            {
+                sb.AppendLine($"{kv.Key}: {kv.Value}");
+            }
+            return sb.ToString();
         }
     }
 }

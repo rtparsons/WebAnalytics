@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using WebAnalytics.Models;
 
 namespace WebAnalytics.Analysers
 {
-    interface IAnalyser
+    public interface IAnalyser
     {
+        string GetAsPrintableString(GetPageResponse toParse);
     }
 }
