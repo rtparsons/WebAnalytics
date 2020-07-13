@@ -17,9 +17,13 @@ namespace WebAnalytics.ConsoleApp
             var res = await pr.GetPage(page);
 
             var titleAnalysis = new Analysers.PageTitle().GetTitle(res);
+            var scriptAnalysis = new Analysers.ExternalResourceCount().CountScriptResources(res);
+            var cssAnalysis = new Analysers.ExternalResourceCount().CountCssResources(res);
             var wordAnalysis = new Analysers.MostFrequentWords().GetWordDict(res);
 
             Console.WriteLine($"Page title: {titleAnalysis}");
+            Console.WriteLine($"Num of scripts: {scriptAnalysis}");
+            Console.WriteLine($"Num of css files: {cssAnalysis}");
             Console.WriteLine($"Most frequent words:\n");
             foreach(var kv in wordAnalysis)
             {
