@@ -6,6 +6,6 @@ This is a work in progress and will likely evolve and change shape over time.
 
 TODO:
 
-Group the running of the analysers + create a common interface for them.
-Add analysers to DI.
-Introduce database to store analysis results.
+- Group the running of the analysers + create a common interface for them.
+- Add analysers to DI.
+- Introduce database to store analysis results.
