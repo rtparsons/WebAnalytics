@@ -4,18 +4,19 @@ using WebAnalytics.Models;
 
 namespace WebAnalytics
 {
-    public class PageRetriever
+    public class PageRetriever : IPageRetriever
     {
-        private readonly HttpClient _client;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public PageRetriever(HttpClient client)
+        public PageRetriever(IHttpClientFactory httpClientFactory)
         {
-            _client = client;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<GetPageResponse> GetPage(string url)
         {
-            var res = await _client.GetAsync(url);
+            var client = _httpClientFactory.CreateClient();
+            var res = await client.GetAsync(url);
             var content = await res.Content.ReadAsStringAsync();
             return new GetPageResponse
             {

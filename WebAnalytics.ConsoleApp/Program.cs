@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 
 namespace WebAnalytics.ConsoleApp
@@ -11,7 +12,8 @@ namespace WebAnalytics.ConsoleApp
             var page = Console.ReadLine();
             Console.WriteLine("Running...\n");
 
-            var pr = new PageRetriever(new System.Net.Http.HttpClient());
+            var serviceProvider = SetupDI();
+            var pr = serviceProvider.GetService<IPageRetriever>();
             var res = await pr.GetPage(page);
 
             var titleAnalysis = new Analysers.PageTitle().GetTitle(res);
@@ -23,6 +25,16 @@ namespace WebAnalytics.ConsoleApp
             {
                 Console.WriteLine($"{kv.Key}: {kv.Value}");
             }
+        }
+
+        private static ServiceProvider SetupDI()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddHttpClient()
+                .AddSingleton<IPageRetriever, PageRetriever>()
+                .BuildServiceProvider();
+
+            return serviceProvider;
         }
     }
 }

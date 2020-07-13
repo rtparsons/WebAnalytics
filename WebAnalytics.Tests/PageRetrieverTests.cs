@@ -54,8 +54,12 @@ namespace WebAnalytics.Tests
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(response);
+            
             var client = new HttpClient(handlerMock.Object);
-            return new PageRetriever(client);
+            var mockFactory = new Mock<IHttpClientFactory>();
+            mockFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(client);
+
+            return new PageRetriever(mockFactory.Object);
         }
     }
 }
