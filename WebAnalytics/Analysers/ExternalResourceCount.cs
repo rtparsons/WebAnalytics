@@ -8,9 +8,7 @@ namespace WebAnalytics.Analysers
     {
         public int CountScriptResources(GetPageResponse toParse)
         {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(toParse.Content);
-            var scriptTags = doc.DocumentNode.SelectNodes("//script/@src");
+            var scriptTags = toParse.HtmlContent.DocumentNode.SelectNodes("//script/@src");
 
             if (scriptTags!= null) return scriptTags.Count;
             return 0;
@@ -18,9 +16,7 @@ namespace WebAnalytics.Analysers
 
         public int CountCssResources(GetPageResponse toParse)
         {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(toParse.Content);
-            var cssLinks = doc.DocumentNode.SelectNodes("//link");
+            var cssLinks = toParse.HtmlContent.DocumentNode.SelectNodes("//link");
 
             if (cssLinks == null) return 0;
 

@@ -1,13 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HtmlAgilityPack;
 using System.Net;
-using System.Text;
 
 namespace WebAnalytics.Models
 {
     public class GetPageResponse
     {
         public HttpStatusCode StatusCode { get; set; }
-        public string Content { get; set; }
+        public HtmlDocument HtmlContent { get; private set; }
+
+        private string _content;
+        public string Content
+        {
+            get
+            {
+                return _content;
+            }
+            set
+            {
+                _content = value;
+                HtmlContent = new HtmlDocument();
+                HtmlContent.LoadHtml(_content);
+            }
+        }
     }
 }

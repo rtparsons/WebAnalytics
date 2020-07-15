@@ -7,5 +7,4 @@ This is a work in progress and will likely evolve and change shape over time.
 TODO:
 
 - Introduce database to store analysis results.
-- Refactor Html Agility Page so its not re-created each time
 - Web interface

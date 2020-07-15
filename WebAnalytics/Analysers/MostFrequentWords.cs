@@ -15,11 +15,9 @@ namespace WebAnalytics.Analysers
 
         public Dictionary<string, int> GetWordDict(GetPageResponse toParse)
         {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(toParse.Content);
             var wordDict = new Dictionary<string, int>();
 
-            foreach (HtmlNode node in GetAllTextNodes(doc))
+            foreach (HtmlNode node in GetAllTextNodes(toParse.HtmlContent))
             {
                 var words = node.InnerText.Split(_wordSplitChars, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var word in words)

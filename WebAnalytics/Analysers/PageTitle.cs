@@ -12,9 +12,7 @@ namespace WebAnalytics.Analysers
         }
 
         public string GetTitle(GetPageResponse toParse) {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(toParse.Content);
-            var titleNode = doc.DocumentNode.SelectSingleNode("//head/title");
+            var titleNode = toParse.HtmlContent.DocumentNode.SelectSingleNode("//head/title");
             if (titleNode != null) return titleNode.InnerText;
             return "";
         }
